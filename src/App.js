@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import PokemonContainer from './components/PokemonContainer'
+import PokemonComponent from './components/PokemonComponent'
+import { Switch, Route } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends Component {
+
+  state = {
+    pokemonArray: [],
+    currentPokemon: undefined,
+    pokemon: undefined
+  }
+
+  componentDidMount(){
+    fetch("https://pokeapi.co/api/v2/pokemon")
+    .then(r => r.json())
+    .then(data => this.setState({ pokemonArray: data.results }))
+  }
+
+  currentPokemon = (pokemonName, url) => {
+    this.setState({ currentPokemon: {name: pokemonName, url: url} })
+  }
+
+  render() {
+    console.log(this.state);
+    return (
+      <div className="App">
+        <Switch>
+          <Route path="/" exact render={() => <PokemonContainer pokemonArray={ this.state.pokemonArray } currentPokemon={this.currentPokemon}/> } />
+          <Route exact path="/:pokemon">
+            <PokemonComponent pokemon={ this.state.currentPokemon }/>
+          </Route>
+          <Route render={ () => <p>Page not Found</p> } />
+        </Switch>
+      </div>
+    );
+  }
+
 }
 
 export default App;
