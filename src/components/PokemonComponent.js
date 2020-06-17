@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Header, Segment } from 'semantic-ui-react'
+import { Table, Header, Segment, Image } from 'semantic-ui-react'
 
 class PokemonContainer extends Component {
 
@@ -20,18 +20,22 @@ class PokemonContainer extends Component {
   }
 
   render() {
-    console.log(this.state, this.props);
+    console.log(this.state);
     return (
       <div>
         <Segment color='red' inverted>
           <Header>{this.props.pokemon.name.toUpperCase()}</Header>
         </Segment>
-        <Table color='red'>
-          <Table.Body>
         {
           this.state.pokemon
           ?
           <>
+          <Segment>
+            <Image src={this.state.pokemon.sprites.front_default}/>
+          </Segment>
+
+          <Table color='red'>
+          <Table.Body>
           <Table.Row>
             <Table.Cell>ID:</Table.Cell>
             <Table.Cell>{ this.state.pokemon.id }</Table.Cell>
@@ -52,12 +56,12 @@ class PokemonContainer extends Component {
             <Table.Cell>Order:</Table.Cell>
             <Table.Cell>{ this.state.pokemon.order }</Table.Cell>
           </Table.Row>
+          </Table.Body>
+          </Table>
           </>
           :
           null
         }
-          </Table.Body>
-        </Table>
       </div>
     );
   }
